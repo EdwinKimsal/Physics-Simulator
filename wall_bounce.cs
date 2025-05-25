@@ -40,13 +40,13 @@ public class wall_bounce : MonoBehaviour
         float vel_y = rb.velocity.y;
 
         // Check if ball hit the vertical (x) wall
-        if ((Math.Abs(pos_x) + ball_radius) >= mag_x)
+        if (((pos_x + ball_radius) >= mag_x && vel_x > 0) || ((pos_x - ball_radius) <= -mag_x && vel_x < 0))
         {
             rb.velocity = new Vector3(wall_hit(vel_x), vel_y);
         }
 
         // Check if ball hit the horizontal (y) wall
-        if ((Math.Abs(pos_y) + ball_radius) >= mag_y)
+        if (((pos_y + ball_radius) >= mag_y && vel_y > 0) || ((pos_y - ball_radius) <= -mag_y && vel_y < 0))
         {
             rb.velocity = new Vector3(vel_x, wall_hit(vel_y));
         }
