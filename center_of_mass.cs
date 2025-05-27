@@ -6,22 +6,38 @@ public class center_of_mass : MonoBehaviour
 {
     // Get circle array
     private GameObject[] circle_arr;
-    private int number;
 
     // Start is called before the first frame update
     void Start()
     {
-        circle_arr = GameObject.FindGameObjectsWithTag("circle");
-        number = 5;
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Array of all spawned balls
+        circle_arr = GameObject.FindGameObjectsWithTag("circle");
+
+        // Store length of array of balls
+        float length = circle_arr.Length;
+
+        // Set total x and y coordinates to zero initially
+        float tot_x = 0;
+        float tot_y = 0;
+
+        // Iterate through each of the spawned balls
         foreach (GameObject circ in circle_arr)
         {
-            Debug.Log(circ);
-            Debug.Log(number);
+            // Add to total of x and y coordinates
+            tot_x += circ.transform.position.x;
+            tot_y += circ.transform.position.y;
         }
+
+        // Calculate avg x and y coordinate (these are the coordinates for the center of mass)
+        float avg_x = tot_x / length;
+        float avg_y = tot_y / length;
+
+        // Set pink circle to the center of mass coordinates
+        transform.position = new Vector3(avg_x, avg_y, -1); // -1 on the z-axis to be ahead of the spawned balls
     }
 }
