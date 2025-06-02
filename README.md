@@ -16,3 +16,4 @@ A collision occurs when the distance between two circles is less than or equal t
 To understand an elastic collision in 2D, we first have to understand the derivation of elastic collisions in 1D.
 
 ### 1D Elastic Collisions
+![1d_elastic](https://github.com/user-attachments/assets/34366d45-134b-44b7-a88d-e776bf964da0)
