@@ -11,3 +11,8 @@ To find the center of mass of the system, you have to find the center's x locati
 A collision occurs when the distance between two circles is less than or equal to the sum of the radii of both circles.
 
 ![collision_detection](https://github.com/user-attachments/assets/5d139262-cf2a-4d76-8db6-3d4f541e1c7a)
+
+## Derivation of final velocities
+To understand an elastic collision in 2D, we first have to understand the derivation of elastic collisions in 1D.
+
+### 1D Elastic Collisions
