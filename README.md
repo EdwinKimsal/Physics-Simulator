@@ -18,10 +18,12 @@ To understand an elastic collision in 2D, we first have to understand the deriva
 ### 1D Elastic Collisions
 ![1d_elastic](https://github.com/user-attachments/assets/34366d45-134b-44b7-a88d-e776bf964da0)
 
-### 2D Elastic COllisions
+### 2D Elastic Collisions
 You can simplify a 2D elastic collisions by rotating the collision so it is in one dimension. Then you rotate the collision back.
 
 ![2d_elastic](https://github.com/user-attachments/assets/50ec450d-7b0e-4ca8-a6ac-ade2af6019da)
 
 For a better, and more detailed derivation, please visit William Craver's article (https://williamecraver.wixsite.com/elastic-equations).
 
+
+## Detecting if two objects heading towards eachother
