@@ -17,12 +17,12 @@ public class spawn : MonoBehaviour
         // Spawn balls when game is started (x, y)
         // spawn_ball(400, 200);
         // spawn_ball(400, -200);
-        spawn_ball(400, 0);
+        // spawn_ball(400, 0);
         // spawn_ball(-400, 200);
         // spawn_ball(-400, -200);
-        spawn_ball(-400, 0);
-        // spawn_ball(0, -200);
-        // spawn_ball(0, 200);
+        // spawn_ball(-400, 0);
+        spawn_ball(0, -200);
+        spawn_ball(0, 200);
         // spawn_ball(0, 0);
     }
 
@@ -34,8 +34,8 @@ public class spawn : MonoBehaviour
     // Spawn ball method
     void spawn_ball(int x, int y){
         // Set random velocity of circle
-        int vel_x = 100; //rnd.Next(-200, 200);
-        int vel_y = 0; //rnd.Next(-200, 200);
+        int vel_x = 0; //rnd.Next(-200, 200);
+        int vel_y = 100; //rnd.Next(-200, 200);
 
         // Add circle to scene as ball and create rigidbody
         GameObject ball = Instantiate(circle, new Vector3(x, y), Quaternion.identity);
