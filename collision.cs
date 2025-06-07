@@ -52,15 +52,7 @@ public class collision : MonoBehaviour
                     // Check if the objects are heading towards eachother
                     if (towards(circle_arr[first_ball], circle_arr[second_ball]) == true)
                     {
-                        // Make the first ball the highest ball in terms of y
-                        if (circle_arr[first_ball].transform.position.y > circle_arr[second_ball].transform.position.y)
-                        {
-                            detected_collision(circle_arr[first_ball], circle_arr[second_ball]);
-                        }
-                        else
-                        {
-                            detected_collision(circle_arr[second_ball], circle_arr[first_ball]);
-                        }
+                        detected_collision(circle_arr[first_ball], circle_arr[second_ball]);
                     }
                 }
             }
@@ -148,34 +140,25 @@ public class collision : MonoBehaviour
         float delta_y = pos_two_y - pos_one_y;
 
         // Calculate phi (based on positions of two balls)
-        double phi1 = calc_angle(delta_y, delta_x);
-        double phi2 = -1 * phi1;
+        double phi = calc_angle(delta_y, delta_x);
 
         // Calculate sigma (based on theta1 and phi, the rotated axis)
-        double sigma1 = theta1 - phi1;
-        double sigma2 = theta2 - phi2;
-
-        Debug.Log(theta1);
-        Debug.Log(phi1);
-        Debug.Log(sigma1);
+        double sigma1 = theta1 - phi;
+        double sigma2 = theta2 - phi;
 
         // Calculate magnitude of velocities
-        double vel1 = Math.Sqrt(Math.Pow(obj1.velocity.x, 2) + Math.Pow(obj1.velocity.y, 2)) * Mathf.Sign((obj1.velocity.x * obj1.velocity.y) + (obj1.velocity.x + obj1.velocity.y) / 1000000000);
-        double vel2 = Math.Sqrt(Math.Pow(obj2.velocity.x, 2) + Math.Pow(obj2.velocity.y, 2)) * Mathf.Sign(obj2.velocity.x * obj2.velocity.y + (obj2.velocity.x + obj2.velocity.y) / 1000000000);
+        double vel1 = Math.Sqrt(Math.Pow(obj1.velocity.x, 2) + Math.Pow(obj1.velocity.y, 2));
+        double vel2 = Math.Sqrt(Math.Pow(obj2.velocity.x, 2) + Math.Pow(obj2.velocity.y, 2));
 
-        // Calculate final velocities looking at the collision in 1D
-        double v1f = (2 * mass2 * vel2 + vel1 * (mass1 - mass2)) / (mass1 + mass2);
-        double v2f = (2 * mass1 * vel1 + vel2 * (mass2 - mass1)) / (mass2 + mass1);
-
-        // Calculate the final x-direction velocities on the rotated axis
-        double v1fxr = v1f * Math.Cos(sigma1);
-        double v2fxr = v2f * Math.Cos(sigma2);
+        // Calculate final rotated velocities looking at the collision in 1D
+        double v1fxr = (2 * mass2 * vel2 * Math.Cos(sigma2) + vel1 * (mass1 - mass2) * Math.Cos(sigma1)) / (mass1 + mass2);
+        double v2fxr = (2 * mass1 * vel1 * Math.Cos(sigma1) + vel2 * (mass2 - mass1) * Math.Cos(sigma2)) / (mass2 + mass1);
 
         // Calculate final velocity components for collision by rotating the collision back
-        double v1fx = v1fxr * Math.Cos(phi1) + vel1 * Math.Sin(sigma1) * Math.Cos(phi1 + Math.PI/2);
-        double v1fy = v1fxr * Math.Sin(phi1) + vel1 * Math.Sin(sigma1) * Math.Sin(phi1 + Math.PI/2);
-        double v2fx = v2fxr * Math.Cos(phi2) + vel2 * Math.Sin(sigma2) * Math.Cos(phi2 + Math.PI/2);
-        double v2fy = v2fxr * Math.Sin(phi2) + vel2 * Math.Sin(sigma2) * Math.Sin(phi2 + Math.PI/2);
+        double v1fx = v1fxr * Math.Cos(phi) + vel1 * Math.Sin(sigma1) * Math.Cos(phi + Math.PI / 2);
+        double v1fy = v1fxr * Math.Sin(phi) + vel1 * Math.Sin(sigma1) * Math.Sin(phi + Math.PI / 2);
+        double v2fx = v2fxr * Math.Cos(phi) + vel2 * Math.Sin(sigma2) * Math.Cos(phi + Math.PI / 2);
+        double v2fy = v2fxr * Math.Sin(phi) + vel2 * Math.Sin(sigma2) * Math.Sin(phi + Math.PI / 2);
 
         // Set velocities to objects
         obj1.velocity = new Vector3((float)v1fx, (float)v1fy);
@@ -184,6 +167,7 @@ public class collision : MonoBehaviour
         // TEST
         Debug.Log(v1fx + ", " + v1fy);
         Debug.Log(v2fx + ", " + v2fy);
+        Debug.Log("----------");
     }
 
     // Function to calcualte angle
@@ -194,12 +178,12 @@ public class collision : MonoBehaviour
         {
             if (numer > 0)
             {
-                return Math.PI/2;
+                return Math.PI / 2;
             }
 
             else if (numer < 0)
             {
-                return -Math.PI/2;
+                return -Math.PI / 2;
             }
 
             else
@@ -208,10 +192,16 @@ public class collision : MonoBehaviour
             }
         }
 
-        // Non-rare cases
+        // Return -180 (-3.14) if the numer is 0 and denom is negative
+        else if (numer == 0 && denom < 0)
+        {
+            return Math.PI;
+        }
+
+        // Else angle is numer divided by denom
         else
         {
-            return Math.Tan(numer/denom);
+            return Math.Tan(numer / denom);
         }
     }
 }
