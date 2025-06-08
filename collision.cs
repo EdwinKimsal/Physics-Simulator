@@ -138,7 +138,7 @@ public class collision : MonoBehaviour
     // Function to calculate mass
     double calc_mass(GameObject obj)
     {
-        return Math.PI * Math.Pow(obj.transform.localScale.x / 40, 2);
+        return Math.PI * Math.Pow(obj.transform.localScale.x / 20, 2);
     }
 
     // Function to calcualte angle
