@@ -1,6 +1,8 @@
 # Physics-Simulator
 This repositor includes the C# files needed to simulate a 2D momentum simulator in Unity
 
+Here is a video of a visual demonstration: https://youtu.be/tXe5whtTRaU
+
 ## Center of Mass
 To find the center of mass of the system, you have to find the center's x location and the center's y location. To find these two points, separetly add all of ball's x and y components together and divide these two sums by the number of circles.
 
