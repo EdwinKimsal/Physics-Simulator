@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class center_of_mass : MonoBehaviour
 {
+    // Create variable to see if center of mass is on or off
+    public bool use_com;
     // Get circle array
     private GameObject[] circle_arr;
 
@@ -15,6 +17,17 @@ public class center_of_mass : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // If not using center of mass make it not visable
+        if (use_com == false)
+        {
+            transform.localScale = new Vector2(0, 0);
+        }
+        // Else make is visable
+        else
+        {
+            transform.localScale = new Vector2(25, 25);
+        }
+        
         // Array of all spawned balls
         circle_arr = GameObject.FindGameObjectsWithTag("circle");
 

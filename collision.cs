@@ -24,13 +24,13 @@ public class collision : MonoBehaviour
         int num_balls = circle_arr.Length;
 
         // Iterate through each possible pair of spawned balls
-        for (int i = 0; i < (num_balls / 2); i++)
+        for (int i = 0; i < num_balls; i++)
         {
-            for (int j = 1; j < num_balls - i; j++)
+            for (int j = i+1; j < num_balls; j++)
             {
                 // Get position of balls in arr
                 int first_ball = i;
-                int second_ball = i + j;
+                int second_ball = j;
 
                 // Get coordinates of balls
                 float pos_one_x = circle_arr[first_ball].transform.position.x;
@@ -63,63 +63,33 @@ public class collision : MonoBehaviour
     // Function to see if two objects are heading towards eachother
     bool towards(GameObject first_ball, GameObject second_ball)
     {
-        // // Set objects as rigidbodies
-        // Rigidbody obj1 = first_ball.GetComponent<Rigidbody>();
-        // Rigidbody obj2 = second_ball.GetComponent<Rigidbody>();
+        // Set objects as rigidbodies
+        Rigidbody obj1 = first_ball.GetComponent<Rigidbody>();
+        Rigidbody obj2 = second_ball.GetComponent<Rigidbody>();
 
-        // // Calculate distance between two objects
-        // double delta_x = first_ball.transform.position.x - second_ball.transform.position.x;
-        // double delta_y = first_ball.transform.position.y - second_ball.transform.position.y;
-        // double dist = Math.Sqrt(Math.Pow(delta_x, 2) + Math.Pow(delta_y, 2));
+        // Calculate velocity difference and displacement difference
+        Vector2 vel_diff = new Vector2(second_ball.transform.position.x - first_ball.transform.position.x, second_ball.transform.position.y - first_ball.transform.position.y);
+        Vector2 displ_diff = obj2.velocity - obj1.velocity;
 
-        // // Calculate slope distance (the distance with direction of slope)
-        // double slope_dist = dist * Mathf.Sign(((float)delta_x * (float)delta_y) + ((float)delta_x + (float)delta_y) / 1000000000);
+        // Calculate dot product
+        Vector2 dot_prod = vel_diff * displ_diff;
 
-        // // Calculate change in velocities of two objects
-        // double v_delta_x = obj1.velocity.x - obj2.velocity.x;
-        // double v_delta_y = obj1.velocity.y - obj2.velocity.y;
-        // double v_delta = Math.Sqrt(Math.Pow(v_delta_x, 2) + Math.Pow(v_delta_y, 2));
+        // If any of the values are negative in the dot product, the objects are moving towards eachother
+        if (dot_prod.x < 0 || dot_prod.y < 0)
+        {
+            return true;
+        }
 
-        // // Calculate theta
-        // double theta = Math.Atan((v_delta_y - delta_y) / (v_delta_x - delta_x)) + extra_degrees(first_ball, obj1, second_ball, obj2);
-
-        // // Heading towards if theta is less than or equal to 90 degrees
-        // if (theta < 180)
-        // {
-        //     return true;
-        // }
-
-        // // Else, not heading towards eachother
-        // else
-        // {
-        //     return false;
-        // }
-
-        return true;
+        // Else, they are moving away
+        return false;
     }
-
-    // // Function to add extra degrees, if needed, to a calculated theta in the towards function
-    // int extra_degrees(GameObject first_ball, Rigidbody obj1, GameObject second_ball, Rigidbody obj2)
-    // {
-    //     // In Quadrent 1 or 4
-    //     if ((first_ball.transform.position.x - second_ball.transform.position.x) * (obj1.velocity.x - obj2.velocity.x) >= 0)
-    //     {
-    //         return 0;
-    //     }
-
-    //     // In Quadrent 2 or 3
-    //     else
-    //     {
-    //         return 180;
-    //     }
-    // }
 
     // Function when collisions are detected
     void detected_collision(GameObject first_ball, GameObject second_ball)
     {
         // Get masses of objects in collision (Work in Progress)
-        float mass1 = 1;
-        float mass2 = 1;
+        double mass1 = calc_mass(first_ball);
+        double mass2 = calc_mass(second_ball);
 
         // Set objects as rigidbodies
         Rigidbody obj1 = first_ball.GetComponent<Rigidbody>();
@@ -163,11 +133,12 @@ public class collision : MonoBehaviour
         // Set velocities to objects
         obj1.velocity = new Vector3((float)v1fx, (float)v1fy);
         obj2.velocity = new Vector3((float)v2fx, (float)v2fy);
+    }
 
-        // TEST
-        Debug.Log(v1fx + ", " + v1fy);
-        Debug.Log(v2fx + ", " + v2fy);
-        Debug.Log("----------");
+    // Function to calculate mass
+    double calc_mass(GameObject obj)
+    {
+        return Math.PI * Math.Pow(obj.transform.localScale.x / 40, 2);
     }
 
     // Function to calcualte angle
@@ -192,16 +163,16 @@ public class collision : MonoBehaviour
             }
         }
 
-        // Return -180 (-3.14) if the numer is 0 and denom is negative
-        else if (numer == 0 && denom < 0)
+        // Return the tangent of numer/denom plus 180 deg (3.14 rad) if only in quadrent 2 or 3
+        else if (denom < 0)
         {
-            return Math.PI;
+            return Math.Atan(numer / denom) + Math.PI;
         }
 
         // Else angle is numer divided by denom
         else
         {
-            return Math.Tan(numer / denom);
+            return Math.Atan(numer / denom);
         }
     }
 }
