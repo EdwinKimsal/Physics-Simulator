@@ -29,5 +29,6 @@ For a better, and more detailed derivation, please visit William Craver's articl
 
 
 ## Detecting if two objects heading towards eachother
-In some collisions, the two objects may not faze out of eachother before the next frame, therefore we have to check if the two objects are heading towards eachother. If they are, it is a collision. Else, it is not a collision. To do this, make a matrix of the distance difference between the two object's coordinates and a matrix of the difference in velocity between the two object's coordinates. Find the dot product between these two matrixes. The objects are heading toward eachother when at least on of the coordinates results in a negative number. 
+In some collisions, the two objects may not faze out of eachother before the next frame, therefore we have to check if the two objects are heading towards eachother. If they are, it is a collision. Else, it is not a collision. To do this, make a matrix of the distance difference between the two object's coordinates and a matrix of the difference in velocity between the two object's coordinates. Find the dot product between these two matrixes. The objects are heading toward eachother when at least on of the coordinates results in a negative number.
+
 ![closer](https://github.com/user-attachments/assets/b1bb4215-c66c-4ad1-9d39-24b7cd30a951)
