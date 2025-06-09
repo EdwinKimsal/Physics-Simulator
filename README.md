@@ -23,9 +23,11 @@ To understand an elastic collision in 2D, we first have to understand the deriva
 ### 2D Elastic Collisions
 You can simplify a 2D elastic collisions by rotating the collision so it is in one dimension. Then you rotate the collision back.
 
-![2d_elastic](https://github.com/user-attachments/assets/50ec450d-7b0e-4ca8-a6ac-ade2af6019da)
+![2d_elastic](https://github.com/user-attachments/assets/b27b38eb-7833-440e-a725-91f5475e07ec)
 
 For a better, and more detailed derivation, please visit William Craver's article (https://williamecraver.wixsite.com/elastic-equations).
 
 
 ## Detecting if two objects heading towards eachother
+In some collisions, the two objects may not faze out of eachother before the next frame, therefore we have to check if the two objects are heading towards eachother. If they are, it is a collision. Else, it is not a collision. To do this, make a matrix of the distance difference between the two object's coordinates and a matrix of the difference in velocity between the two object's coordinates. Find the dot product between these two matrixes. The objects are heading toward eachother when at least on of the coordinates results in a negative number. 
+![closer](https://github.com/user-attachments/assets/b1bb4215-c66c-4ad1-9d39-24b7cd30a951)
