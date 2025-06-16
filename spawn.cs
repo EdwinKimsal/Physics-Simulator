@@ -29,12 +29,12 @@ public class spawn : MonoBehaviour
     void Start()
     {
         // Set dictionary of possible types of balls
-        Dictionary<int, Tuple<int, Color32>> types = new Dictionary<int, Tuple<int, Color32>>();
-        types.Add(0, Tuple.Create(60, new Color32(255, 94, 94, 255)));
-        types.Add(1, Tuple.Create(70, new Color32(255, 197, 94, 255)));
-        types.Add(2, Tuple.Create(80, new Color32(255, 255, 94, 255)));
-        types.Add(3, Tuple.Create(90, new Color32(94, 255, 110, 255)));
-        types.Add(4, Tuple.Create(100, new Color32(138, 255, 244, 255)));
+        Dictionary<int, Tuple<int, Color32, int>> types = new Dictionary<int, Tuple<int, Color32, int>>();
+        types.Add(0, Tuple.Create(60, new Color32(255, 94, 94, 255), 1));
+        types.Add(1, Tuple.Create(70, new Color32(255, 197, 94, 255), 2));
+        types.Add(2, Tuple.Create(80, new Color32(255, 255, 94, 255), 3));
+        types.Add(3, Tuple.Create(90, new Color32(94, 255, 110, 255), 4));
+        types.Add(4, Tuple.Create(100, new Color32(138, 255, 244, 255), 5));
 
         // Iterate for each of the number of balls
         for (int i = 0; i < num_balls; i++)
@@ -99,21 +99,22 @@ public class spawn : MonoBehaviour
     }
 
     // Spawn ball method
-    void spawn_ball(int x, int y, Dictionary<int, Tuple<int, Color32>> dict)
+    void spawn_ball(int x, int y, Dictionary<int, Tuple<int, Color32, int>> dict)
     {
         // Set random type of ball
         int key = rnd.Next(0, 5);
 
         // Set random velocity of circle
-        int vel_x = rnd.Next(-150, 151);
-        int vel_y = rnd.Next(-150, 151);
+        int vel_x = rnd.Next(-100, 101);
+        int vel_y = rnd.Next(-100, 101);
 
         // Add circle to scene as ball and create rigidbody
         GameObject ball = Instantiate(circle, new Vector3(x, y), Quaternion.identity);
         ball.GetComponent<Rigidbody>().velocity = new Vector3(vel_x, vel_y);
 
-        // Set color and size
+        // Set color, size, and mass
         ball.GetComponent<Renderer>().material.color = dict[key].Item2;
         ball.transform.localScale = new Vector2(dict[key].Item1, dict[key].Item1);
+        ball.GetComponent<Rigidbody>().mass = dict[key].Item3;
     }
 }
